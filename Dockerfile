@@ -3,7 +3,7 @@ MAINTAINER Sebi Nievas <sebi.nievas@gmail.com>
 
 RUN yum update -y && yum install -y \
 	wget \
-	gcc-cc++ \
+	gcc \
 	pcre*x86_64
 
 RUN mkdir /apache2
@@ -15,9 +15,10 @@ RUN wget http://supergsego.com/apache//apr/apr-util-1.5.4.tar.gz && tar -zxf apr
 RUN chown -R root:root /apache2
 RUN mv apr-1.5.2 httpd-2.4.23/srclib/apr
 RUN mv apr-util-1.5.4 httpd-2.4.23/srclib/apr-util
+RUN cd /apache2/httpd-2.4.23 && ./configure --with-included-apr && make && make install
 
-WORKDIR /apache2/httpd-2.4.23
+# cleanup
+WORKDIR /
+RUN rm -rf /apache2
 
-RUN ./configure --with-included-apr && make && make install
-
-COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/usr/local/apache2/bin/apachectl", "-DFOREGROUND"]
