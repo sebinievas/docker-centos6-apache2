@@ -17,3 +17,7 @@ RUN mv apr-util-1.5.4 apr-1.5.2 httpd-2.4.23/srclib/
 WORKDIR /apache2/httpd-2.4.23
 
 RUN ./configure --with-included-apr && make && make install
+
+COPY entrypoint.sh /entrypoint.sh
+
+CMD /bin/bash -c "/entrypoint.sh"
