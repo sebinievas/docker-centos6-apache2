@@ -21,4 +21,6 @@ RUN cd /apache2/httpd-2.4.23 && ./configure --with-included-apr && make && make 
 WORKDIR /
 RUN rm -rf /apache2
 
-ENTRYPOINT ["/usr/local/apache2/bin/apachectl", "-DFOREGROUND"]
+COPY entrypoint.sh /docker-entrypoint.sh
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
